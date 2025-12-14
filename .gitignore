@@ -1,0 +1,12 @@
+.env
+.venv
+env/
+venv/
+*.key
+
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+.DS_Store
+postgres_data/

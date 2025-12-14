@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # Ana Veritabanı Servisimiz
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: insightfeed_db
+    restart: always
+    # Çevresel değişkenleri .env dosyasından çekeceğiz
+    env_file:
+      - .env
+    # Bilgisayarının 5432 portunu, Docker'ın 5432 portuna bağlar
+    ports:
+      - "5432:5432"
+    # Veriler kaybolmasın diye bir "volume" (depo) oluşturuyoruz
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+# Veri deposunu tanımlıyoruz
+volumes:
+  postgres_data:
