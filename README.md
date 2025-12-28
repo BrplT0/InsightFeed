@@ -1,6 +1,3 @@
----
-
-```markdown
 # 🚀 InsightFeed API
 
 > An AI-powered semantic search engine and news aggregator API.
