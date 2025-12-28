@@ -1,55 +1,63 @@
-# 🚀 InsightFeed
+---
 
-> An AI-powered news analysis engine that understands meaning, not just keywords
+```markdown
+# 🚀 InsightFeed API
 
-**InsightFeed** transforms how you discover and explore news content. By leveraging semantic vector embeddings and similarity search, it enables you to find relevant articles based on context and meaning—even when exact keywords don't match.
+> An AI-powered semantic search engine and news aggregator API.
+> **Understand meaning, don't just match keywords.**
+
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker)
+
+**InsightFeed** is a modern backend system that aggregates news from 50+ global sources, filters out noise, generates AI embeddings, and serves results via a high-performance REST API. It leverages **PostgreSQL pgvector** to perform semantic similarity searches, allowing users to find relevant content based on context rather than exact keywords.
 
 ---
 
-## ✨ What Makes InsightFeed Special?
+## ✨ What's New in v1.0?
 
-Traditional search engines look for exact word matches. InsightFeed understands *meaning*. 
-
-🔍 **Example:**  
-Search for *"I need winter gear"* → Discover articles about heaters, wool clothing, and cold weather equipment—without those exact words appearing in your query.
+- **🌍 Massive Scale:** Pre-configured to ingest data from **50+ top-tier sources** (Wired, NASA, Bloomberg, IGN, BBC, etc.).
+- **🛡️ Smart Junk Filter:** Automatically detects and rejects low-quality content (clickbait, short titles, generic headers like "Business" or "Politics").
+- **⚡ RESTful API:** Built with **FastAPI**, providing a full Swagger UI for interaction.
+- **🧠 Advanced AI:** Uses `all-MiniLM-L6-v2` to understand the nuance of headlines and summaries.
 
 ---
 
 ## 🎯 Key Features
 
-### 🤖 **Intelligent Data Pipeline**
-- Automated ETL system that fetches and processes news from RSS feeds
-- Supports major sources like Wired, Bloomberg, and more
-- Clean, structured data ready for analysis
+### 🤖 **Intelligent ETL Pipeline**
+- **Automated Ingestion:** Fetches thousands of articles in seconds.
+- **Noise Reduction:** Custom algorithms filter out generic and "garbage" titles to ensure high-quality search results.
+- **Robustness:** Handles connection errors and duplicates gracefully.
 
 ### 🧠 **AI-Powered Embeddings**
-- Converts articles into 384-dimensional semantic vectors
-- Uses `all-MiniLM-L6-v2` from Sentence-Transformers
-- Captures contextual meaning beyond simple keywords
+- Converts text into **384-dimensional dense vectors**.
+- Captures semantic meaning (e.g., understands that *"Cupertino Giant"* refers to *Apple*).
 
 ### ⚡ **Lightning-Fast Vector Search**
-- PostgreSQL 16 with pgvector extension
-- Optimized similarity search with HNSW indexing
-- Sub-second query responses even with thousands of articles
+- **pgvector Extension:** Native vector similarity search inside PostgreSQL.
+- **HNSW Indexing:** Optimized for sub-second query responses even with large datasets.
 
-### 🔎 **Natural Language Queries**
-- Search using conversational language
-- Context-aware results ranked by semantic similarity
-- No need for boolean operators or complex syntax
+### 🌐 **Modern API Architecture**
+- **FastAPI:** High-performance, async-ready web framework.
+- **Swagger UI:** Automatic interactive documentation at `/docs`.
+- **Pydantic:** Strong data validation and serialization.
 
 ---
 
 ## 🏗️ Technology Stack
 
-| Component | Technology |
-|-----------|-----------|
-| **Language** | Python 3.12+ |
-| **Database** | PostgreSQL 16 + pgvector |
-| **ORM** | SQLAlchemy 2.0 (strongly typed) |
-| **AI Model** | all-MiniLM-L6-v2 (Hugging Face) |
-| **RSS Parser** | feedparser |
-| **Container** | Docker & Docker Compose |
-| **Package Manager** | Poetry |
+| Component | Technology | Description |
+|-----------|-----------|-------------|
+| **Core** | Python 3.12 | The brain of the operation. |
+| **API** | FastAPI + Uvicorn | High-performance ASGI web server. |
+| **Database** | PostgreSQL 16 | Relational storage. |
+| **Vector Search** | pgvector | Extension for AI similarity search. |
+| **ORM** | SQLAlchemy 2.0 | Modern, strongly-typed database interaction. |
+| **AI Model** | Sentence-Transformers | `all-MiniLM-L6-v2` model via Hugging Face. |
+| **Container** | Docker & Compose | Infrastructure orchestration. |
+| **Package Mgr** | Poetry | Dependency management. |
 
 ---
 
@@ -57,8 +65,7 @@ Search for *"I need winter gear"* → Discover articles about heaters, wool clot
 
 ### Prerequisites
 
-Before you begin, ensure you have:
-
+Ensure you have the following installed:
 - ✅ [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - ✅ [Python 3.10+](https://www.python.org/downloads/)
 - ✅ [Poetry](https://python-poetry.org/docs/)
@@ -67,17 +74,19 @@ Before you begin, ensure you have:
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/InsightFeed.git
+git clone [https://github.com/YOUR_USERNAME/InsightFeed.git](https://github.com/YOUR_USERNAME/InsightFeed.git)
 cd InsightFeed
+
 ```
 
 **2. Install dependencies**
+
 ```bash
 poetry install
+
 ```
 
 **3. Configure environment**
-
 Create a `.env` file in the project root:
 
 ```env
@@ -87,49 +96,53 @@ POSTGRES_PASSWORD=admin
 POSTGRES_DB=insightfeed_db
 DB_HOST=localhost
 DB_PORT=5432
+
 ```
 
-> ⚠️ **Important:** Never commit `.env` to version control
+**4. Start the Infrastructure**
 
-**4. Start the database**
 ```bash
 docker-compose up -d
+
 ```
 
-This launches PostgreSQL with pgvector in a Docker container.
+*This spins up the PostgreSQL container with the pgvector extension enabled.*
 
 ---
 
-## 💡 Usage
+## 💡 Usage Guide
 
-### Ingest News Data
+### 1️⃣ Ingest Data (ETL)
 
-Fetch articles, generate embeddings, and populate the database:
+Populate your database with thousands of articles from the 50+ configured sources.
 
 ```bash
 poetry run python ingest.py
+
 ```
 
-> 📝 **Note:** First run automatically initializes database tables and extensions
+*> Watch as the system fetches, filters, embeds, and indexes news from around the world.*
 
-### Search with Natural Language
+### 2️⃣ Start the API Server
 
-Query your knowledge base using semantic search:
+Launch the FastAPI backend.
 
 ```bash
-poetry run python search.py
-```
-
-**Example Interaction:**
+poetry run uvicorn api:app --reload
 
 ```
-🔍 Query: "I am feeling cold"
 
-📰 Results:
-  1. "Best Merino Wool T-Shirts for Winter" (similarity: 0.87)
-  2. "Top Space Heaters of 2024" (similarity: 0.84)
-  3. "How to Stay Warm Without Heating Bills" (similarity: 0.81)
-```
+*> The server will start at http://127.0.0.1:8000*
+
+### 3️⃣ Search via Swagger UI
+
+Open your browser and navigate to:
+👉 **[http://127.0.0.1:8000/docs](https://www.google.com/search?q=http://127.0.0.1:8000/docs)**
+
+1. Click on the **`/search`** endpoint.
+2. Click **Try it out**.
+3. Enter a natural language query (e.g., *"Latest AI breakthroughs"* or *"Crypto market trends"*).
+4. Hit **Execute** and see the magic! 🎩✨
 
 ---
 
@@ -137,109 +150,68 @@ poetry run python search.py
 
 ```
 insightfeed/
-├── 📄 docker-compose.yml      # Infrastructure orchestration
-├── 📄 pyproject.toml          # Python dependencies (Poetry)
-├── 📄 ingest.py               # ETL pipeline entry point
-├── 📄 search.py               # Semantic search interface
-├── 📄 .env                    # Environment secrets (gitignored)
+├── 📄 docker-compose.yml      # Infrastructure (Postgres + pgvector)
+├── 📄 pyproject.toml          # Dependencies
+├── 📄 api.py                  # FastAPI Application (Entry Point)
+├── 📄 ingest.py               # ETL Pipeline Entry Point
+├── 📄 .env                    # Secrets (Not committed)
 ├── 📂 src/
-│   ├── 📂 collectors/         # RSS feed ingestion logic
-│   ├── 📂 processors/         # Embedding generation & AI
-│   └── 📂 database/           # Models, connections & CRUD ops
-├── 📄 LICENSE                 # MIT License
-└── 📄 README.md               # You are here
-```
+│   ├── 📂 collectors/         # RSS logic & Junk Filters
+│   ├── 📂 processors/         # Embedding generation
+│   └── 📂 database/           # Models & CRUD operations
+└── 📄 README.md               # Documentation
 
----
-
-## 🛠️ How It Works
-
-### The Semantic Search Pipeline
-
-```
-1. 📡 RSS Ingestion
-   └─> Fetch articles from configured feeds
-   
-2. 🧹 Data Cleaning
-   └─> Extract title, content, metadata
-   
-3. 🤖 Embedding Generation
-   └─> Convert text → 384D vectors
-   
-4. 💾 Vector Storage
-   └─> Store in PostgreSQL with pgvector
-   
-5. 🔍 Similarity Search
-   └─> Query embedding vs. stored vectors
-   
-6. 📊 Ranked Results
-   └─> Return top matches by cosine similarity
 ```
 
 ---
 
 ## 🔧 Configuration
 
-### Adding New RSS Feeds
+### Adding Custom Sources
 
-Edit the feed configuration in `ingest.py`:
+To add more RSS feeds, edit the `RSS_SOURCES` list in `ingest.py`:
 
 ```python
-# Target RSS Feed
-        rss_url = "https://www.wired.com/feed/category/gear/latest/rss"
+RSS_SOURCES = [
+    ("My Custom Feed", "[https://example.com/rss](https://example.com/rss)"),
+    # ... existing 50+ sources
+]
+
 ```
 
-### Adjusting Search Parameters
+### Adjusting the Junk Filter
 
-Modify search behavior in `search.py`:
+To change validation logic, edit `src/collectors/rss_collector.py`:
 
 ```python
-results = search_semantic(
-    query="your query",
-    limit=5,          # Number of results
-)
+BANNED_TITLES = ["business", "politics", "sport", ...] # Add words here
+if len(title) < 10: # Adjust minimum length
+    continue
+
 ```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+Contributions are welcome! Please follow these steps:
 
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. ✍️ Commit your changes (`git commit -m 'Add amazing feature'`)
-4. 📤 Push to the branch (`git push origin feature/amazing-feature`)
-5. 🎉 Open a Pull Request
+1. Fork the repo.
+2. Create a feature branch (`git checkout -b feature/cool-stuff`).
+3. Commit your changes.
+4. Push to the branch.
+5. Open a Pull Request.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- [Sentence-Transformers](https://www.sbert.net/) for the embedding model
-- [pgvector](https://github.com/pgvector/pgvector) for vector similarity search
-- The open-source community for amazing tools and libraries
-
----
-
-## 📧 Contact & Support
-
-- 🐛 [Report a Bug](https://github.com/YOUR_USERNAME/InsightFeed/issues)
-- 💡 [Request a Feature](https://github.com/YOUR_USERNAME/InsightFeed/issues)
-- 📖 [Documentation](https://github.com/YOUR_USERNAME/InsightFeed/wiki)
+This project is licensed under the **MIT License**.
 
 ---
 
 <div align="center">
 
-**Built with ❤️ using AI and Open Source**
-
-⭐ Star this repo if you find it useful!
+**Built with ❤️ by Berat Polat**
 
 </div>
